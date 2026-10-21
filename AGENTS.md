@@ -85,12 +85,13 @@ run single test files only, wrapped in the memguard script.
 - Upstream syncs land with a merge commit, not a squash. A squash would make
   every later sync conflict. See Sync and release.
 - master has the ruleset `master-merge-gate`. A PR needs one approval, and a
-  push dismisses approvals. These checks must pass: Check workflows, Run
-  zizmor, Core test, Code check, Core tests (Pyodide), Library tests (Node.js),
-  Library tests (Chromium), Demo tests (Chromium), Proxy tests (Node.js) (18),
-  Proxy tests (Node.js) (26) and Proxy setup (Linux arm64). Admins can bypass
-  it for PRs only, so nothing can be pushed to master directly. When a required
-  check is renamed, update the ruleset.
+  push dismisses approvals. The ruleset takes anyone's approval, so only
+  project516-review-bot may approve. See Review. These checks must pass: Check
+  workflows, Run zizmor, Core test, Code check, Core tests (Pyodide), Library
+  tests (Node.js), Library tests (Chromium), Demo tests (Chromium), Proxy tests
+  (Node.js) (18), Proxy tests (Node.js) (26) and Proxy setup (Linux arm64).
+  Admins can bypass it for PRs only, so nothing can be pushed to master
+  directly. When a required check is renamed, update the ruleset.
 
 ## Sync and release
 
@@ -119,6 +120,7 @@ for a normal release.
    mode: only the fork's own changes in the files the release touched, from a
    compare of the upstream parent with the head. That works only while the head
    is the merge commit, so the sync makes exactly one commit, pins included.
+   CodeRabbit skips sync PRs.
 5. `sync-release.yml` runs when a `sync/yt-dlp-*` PR merges. It tags the merge
    commit `js-vX.Y.Z`, the next minor version after the highest `js-v*` tag. If
    there is none yet, it starts from the version in `package.json`. The tag
@@ -162,9 +164,11 @@ comments and does not approve, and you have shown every finding false, an admin
 can merge with `gh pr merge <n> --admin`. If the bot fails to review a head, a
 Sonnet subagent reviews instead.
 
-CodeRabbit also reviews PRs, but it is not the gate. `.coderabbit.yaml` makes
-it skip sync PRs, because their code is upstream's. A finding on upstream code
-gets a reply that says so, not a fix. That fix belongs in yt-dlp/yt-dlp.
+CodeRabbit also reviews PRs, but it is not the gate. The ruleset counts any
+approval, so `.coderabbit.yaml` turns off its approve and request-changes
+workflow. It only comments. It also skips sync PRs, because their code is
+upstream's. A finding on upstream code gets a reply that says so, not a fix.
+That fix belongs in yt-dlp/yt-dlp.
 
 ## Glossary
 
