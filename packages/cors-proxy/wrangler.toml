@@ -26,3 +26,11 @@ name = "yt-dlp-wasm-proxy"
 [env.personal.vars]
 ALLOWED_ORIGINS = "https://yt-dlp-wasm-xi.vercel.app,http://localhost:*,http://127.0.0.1:*"
 REQUIRE_ACCESS_KEY = "true"
+
+[[env.personal.ratelimits]]
+name = "RATE_LIMITER"
+namespace_id = "516002"
+
+[env.personal.ratelimits.simple]
+limit = 60
+period = 60
