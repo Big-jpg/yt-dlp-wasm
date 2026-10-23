@@ -8,6 +8,7 @@ const wheels = import.meta.glob('../../../packages/yt-dlp-wasm/dist/*.whl', { qu
 const [wheelURL] = Object.values(wheels);
 
 const DEMO_PROXY = import.meta.env.VITE_DEMO_PROXY_URL || 'https://yt-dlp-demo-proxy.project516.dev';
+const APP_PROXY = import.meta.env.VITE_APP_PROXY_URL || '';
 const STORAGE_KEY = 'yt-dlp-wasm-demo';
 const MAX_LOG_LINES = 2000;
 const MAX_COOKIES_BYTES = 2 * 1024 * 1024;
@@ -43,9 +44,9 @@ const logEl = $('log');
 
 function loadSettings() {
   try {
-    return { mode: 'demo', url: '', key: '', ...JSON.parse(localStorage.getItem(STORAGE_KEY)) };
+    return { mode: APP_PROXY ? 'own' : 'demo', url: APP_PROXY, key: '', ...JSON.parse(localStorage.getItem(STORAGE_KEY)) };
   } catch {
-    return { mode: 'demo', url: '', key: '' };
+    return { mode: APP_PROXY ? 'own' : 'demo', url: APP_PROXY, key: '' };
   }
 }
 
@@ -353,6 +354,7 @@ async function start(url, kind, codec) {
 
     setStage('info');
     const info = await retryFlagged(() => ytdlp.extractInfo(url, { noplaylist: true }), {
+      retries: 0,
       canceled: () => run.canceled,
       onRetry: (attempt, retries) => {
         $('info-detail').textContent = `The site refused the proxy. Trying again (${attempt} of ${retries}).`;
