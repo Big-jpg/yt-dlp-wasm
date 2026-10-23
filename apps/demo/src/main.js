@@ -44,7 +44,9 @@ const logEl = $('log');
 
 function loadSettings() {
   try {
-    return { mode: APP_PROXY ? 'own' : 'demo', url: APP_PROXY, key: '', ...JSON.parse(localStorage.getItem(STORAGE_KEY)) };
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    // A deployed app proxy takes precedence over an old saved URL or demo selection.
+    return { mode: APP_PROXY ? 'own' : (saved.mode || 'demo'), url: APP_PROXY || saved.url || '', key: saved.key || '' };
   } catch {
     return { mode: APP_PROXY ? 'own' : 'demo', url: APP_PROXY, key: '' };
   }
