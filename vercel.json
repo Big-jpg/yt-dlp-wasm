@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "buildCommand": "pnpm --filter @project516/yt-dlp-wasm build && pnpm --filter @project516/yt-dlp-wasm-demo build",
+  "outputDirectory": "apps/demo/dist",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "framework": null
+}
