@@ -25,15 +25,15 @@ export function explain(error, { usingDemoProxy, hasCookies = false }) {
     return {
       title: 'The site asked for a bot check',
       detail: hasCookies
-        ? `It still flags the shared addresses ${proxy} fetches from. Export fresh cookies from a signed-in browser, or try again in a minute.`
-        : `It flags the shared addresses ${proxy} fetches from on some requests. Try again in a minute, or load a cookies file from a signed-in account in the Cookies settings.`,
+        ? `It still flags the shared addresses ${proxy} fetches from. Do not repeatedly retry or upload account cookies to an untrusted relay.`
+        : `It flags the shared addresses ${proxy} fetches from on some requests. The proxy IP is being challenged. Retrying immediately or supplying cookies is not a reliable fix.`,
     };
   }
   if (/does not look like a Netscape format cookies file/.test(raw)) {
     return { title: 'That is not a cookies.txt file', detail: 'Export the cookies again in the Netscape cookies.txt format, or clear them in the Cookies settings.' };
   }
   if (/HTTP Error 429/.test(raw)) {
-    return { title: 'The site is rate limiting the proxy', detail: `It limits the shared addresses ${proxy} fetches from. Try again in a minute.` };
+    return { title: 'The site is rate limiting the proxy', detail: `It limits the shared addresses ${proxy} fetches from. Avoid repeated requests; the upstream host is rejecting traffic from this proxy.` };
   }
   if (/out of memory|RangeError|worker failed|allocation/i.test(raw)) {
     return { title: 'The browser ran out of memory', detail: 'This video is too large for this device. Try audio only.' };
