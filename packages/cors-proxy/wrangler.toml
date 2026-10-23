@@ -24,7 +24,7 @@ period = 60
 name = "yt-dlp-wasm-proxy"
 
 [env.personal.vars]
-ALLOWED_ORIGINS = "https://yt-dlp-wasm-xi.vercel.app,http://localhost:*,http://127.0.0.1:*"
+ALLOWED_ORIGINS = "https://yt-dlp-wasm-xi.vercel.app,https://yt-dlp-wasm-big-team.vercel.app,http://localhost:*,http://127.0.0.1:*"
 REQUIRE_ACCESS_KEY = "true"
 
 [[env.personal.ratelimits]]
