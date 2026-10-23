@@ -4,6 +4,8 @@
 // Response: the target's body, with its status in X-Ytdlp-Status, its reason in
 // X-Ytdlp-Reason and all its headers as JSON [name, value] pairs in
 // X-Ytdlp-Response-Headers. Redirects are not followed.
+const ALLOWED_MEDIA_HOSTS = ['youtube.com', 'youtube-nocookie.com', 'youtu.be', 'googlevideo.com', 'ytimg.com', 'ggpht.com', 'youtubei.googleapis.com'];
+const isAllowedHost = (host) => ALLOWED_MEDIA_HOSTS.some((domain) => host === domain || host.endsWith('.' + domain));
 const EXPOSED_HEADERS = 'X-Ytdlp-Status, X-Ytdlp-Reason, X-Ytdlp-Response-Headers';
 
 function originAllowed(origin, env) {
@@ -51,6 +53,7 @@ export default {
       });
     }
 
+    if (request.method !== 'GET' && request.method !== 'HEAD' && request.method !== 'POST') return refuse(405, 'Method not allowed', cors);
     if (env.REQUIRE_ACCESS_KEY && !env.ACCESS_KEY) return refuse(403, 'ACCESS_KEY is not set', cors);
     if (env.ACCESS_KEY && request.headers.get('X-Ytdlp-Key') !== env.ACCESS_KEY) {
       return refuse(403, 'Invalid access key', cors);
@@ -68,8 +71,8 @@ export default {
     } catch {
       return refuse(400, 'Invalid url or X-Ytdlp-Headers', cors);
     }
-    if (target.protocol !== 'http:' && target.protocol !== 'https:') {
-      return refuse(400, 'Only http and https targets are allowed', cors);
+    if (target.protocol !== 'https:' || target.username || target.password || !isAllowedHost(target.hostname.toLowerCase())) {
+      return refuse(403, 'Only HTTPS requests to supported YouTube media hosts are allowed', cors);
     }
     // Optional hook that node.mjs sets to refuse private targets
     const refusal = await env.checkTarget?.(target);
