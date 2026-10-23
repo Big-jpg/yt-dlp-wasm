@@ -9,6 +9,9 @@ export function explain(error, { usingDemoProxy, hasCookies = false }) {
   const proxy = usingDemoProxy ? 'the demo proxy' : 'your proxy';
 
   if (raw.startsWith(JSPI)) return { title: 'This browser is not supported', detail: raw };
+  if (/CORS proxy error 409|YouTube has challenged this proxy connection/i.test(raw)) {
+    return { title: 'YouTube blocked the proxy connection', detail: 'YouTube redirected the request to Google’s automated-traffic verification page. The Cloudflare relay cannot complete that challenge. Your browser and access key are working; repeatedly retrying or adding google.com to the proxy allowlist will not fix it.' };
+  }
   if (/CORS proxy error 429/.test(raw)) {
     return { title: 'The proxy is rate limited right now', detail: 'Wait a minute and try again, or use a custom proxy.' };
   }
