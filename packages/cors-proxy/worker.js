@@ -71,6 +71,11 @@ export default {
     } catch {
       return refuse(400, 'Invalid url or X-Ytdlp-Headers', cors);
     }
+    // YouTube sometimes redirects Cloudflare egress to Google's bot-check page.
+    // Do not add google.com to the allowlist: this is a challenge, not media.
+    if (target.protocol === 'https:' && (target.hostname === 'google.com' || target.hostname === 'www.google.com') && target.pathname.startsWith('/sorry/')) {
+      return refuse(409, 'YouTube has challenged this proxy connection; no media can be retrieved from this network route.', cors);
+    }
     if (target.protocol !== 'https:' || target.username || target.password || !isAllowedHost(target.hostname.toLowerCase())) {
       return refuse(403, 'Only HTTPS requests to supported YouTube media hosts are allowed', cors);
     }
