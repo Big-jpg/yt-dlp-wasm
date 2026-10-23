@@ -5,18 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
   <meta name="description" content="Download a video or its audio. yt-dlp runs in your browser, with no server of its own.">
-  <title>yt-dlp-wasm</title>
+  <title>Audio Downloader — yt-dlp WASM</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232b7a4b'/%3E%3Cpath d='M16 7v12m-6-5 6 6 6-6M9 25h14' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
   <script type="module" src="/src/main.js"></script>
 </head>
 <body>
   <header class="top">
-    <span class="wordmark">yt-dlp-wasm</span>
-    <a href="https://github.com/Project516/yt-dlp-wasm">GitHub</a>
+    <span class="wordmark">Audio Downloader</span>
+    <a href="https://github.com/Big-jpg/yt-dlp-wasm">GitHub</a>
   </header>
 
   <main>
-    <h1>Download a video or its audio</h1>
+    <h1>Download audio as MP3</h1>
     <noscript><p class="notice">This page needs JavaScript.</p></noscript>
 
     <form id="form" novalidate>
@@ -28,12 +28,12 @@
       <fieldset class="field">
         <legend>Get</legend>
         <div class="segmented">
-          <label><input type="radio" name="kind" value="video" checked><span>Video</span></label>
-          <label><input type="radio" name="kind" value="audio"><span>Audio</span></label>
+          <label><input type="radio" name="kind" value="video"><span>Video</span></label>
+          <label><input type="radio" name="kind" value="audio" checked><span>Audio</span></label>
         </div>
       </fieldset>
 
-      <div class="field" id="audio-field" hidden>
+      <div class="field" id="audio-field">
         <label for="codec">Audio format</label>
         <select id="codec" name="codec">
           <option value="mp3">mp3 (plays everywhere, slower to make)</option>
