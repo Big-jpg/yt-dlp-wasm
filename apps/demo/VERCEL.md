@@ -1,6 +1,6 @@
 # Vercel deployment
 
-Import `Big-jpg/yt-dlp-wasm` in Vercel with the **repository root** as Root Directory. The root `vercel.json` builds the local Python wheel before Vite and publishes `apps/demo/dist`. Use Node.js 25 if available in Vercel; otherwise use the supported Node.js version for build (the browser runtime requires JSPI in the user's browser, not Node on the static host).
+Import `Big-jpg/yt-dlp-wasm` in Vercel with the **repository root** as Root Directory. The root `vercel.json` builds the local Python wheel before Vite and publishes `apps/demo/dist`. Use Node.js 24 on Vercel for building the static site. The build installs Python's `build` wheel builder; JSPI is required in the visitor's browser, not by the static host.
 
 Configure `VITE_DEMO_PROXY_URL` with **your own** CORS proxy URL. The UI also supports a custom proxy under Proxy settings. Do not use the upstream project's demo proxy for a public deployment: it is rate-limited and intended for its own demo.
 
