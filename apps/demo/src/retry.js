@@ -1,8 +1,8 @@
-// YouTube flags the shared IP addresses Cloudflare Workers fetch from on some
-// requests and not others, so another try often gets through.
+// Never retry anti-bot challenges automatically: retries amplify rate limiting
+// and make the shared proxy's reputation worse.
 const FLAGGED = /not a bot|HTTP Error 429/;
 
-export const RETRIES = 3;
+export const RETRIES = 0;
 
 export function flagged(error) {
   return FLAGGED.test(String(error?.message ?? error));
