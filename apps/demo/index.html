@@ -45,7 +45,7 @@
         <button type="submit" id="go" class="primary">Download</button>
         <button type="button" id="cancel" class="secondary" hidden>Cancel</button>
       </div>
-      <p class="hint">Files are held in memory, so very large videos may fail on low-memory devices. The demo may not work from cloud servers, some VPNs, or automated browsers, because the proxy's domain challenges that traffic.</p>
+      <p class="hint">Files are held in memory, so very large videos may fail on low-memory devices. YouTube may challenge cloud-hosted proxy traffic even when the browser runtime works.</p>
     </form>
 
     <div id="error" class="error" role="alert" hidden>
@@ -93,7 +93,7 @@
     <details id="proxy-panel" class="panel">
       <summary>Proxy settings</summary>
       <div class="panel-body">
-        <p>A browser blocks most sites from talking to this page. A proxy relays the requests. It sees the links you download but not the files you save.</p>
+        <p>A browser blocks direct YouTube extraction requests. A network proxy relays them, including media bytes, while conversion and file saving happen on your device. The proxy can observe request URLs and headers.</p>
         <fieldset class="field">
           <legend>Proxy</legend>
           <label class="choice"><input type="radio" name="proxy-mode" value="demo"><span>Demo proxy</span></label>
