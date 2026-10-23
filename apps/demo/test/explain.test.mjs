@@ -4,20 +4,26 @@ import { explain } from '../src/explain.js';
 
 const BOT = new Error('ERROR: [youtube] abc: Sign in to confirm you’re not a bot. Use --cookies-from-browser');
 
-test('the bot check suggests loading cookies when none are loaded', () => {
+test('the bot check explains the shared proxy without recommending cookies', () => {
   const { title, detail } = explain(BOT, { usingDemoProxy: true });
   assert.equal(title, 'The site asked for a bot check');
   assert.match(detail, /the demo proxy/);
-  assert.match(detail, /load a cookies file/);
+  assert.match(detail, /proxy IP is being challenged/);
 });
 
-test('the bot check suggests fresh cookies when some are loaded', () => {
+test('the bot check does not ask for fresh cookies', () => {
   const { detail } = explain(BOT, { usingDemoProxy: false, hasCookies: true });
   assert.match(detail, /your proxy/);
-  assert.match(detail, /fresh cookies/);
+  assert.doesNotMatch(detail, /fresh cookies/);
 });
 
 test('a bad cookies file gets its own message', () => {
   const error = new Error("ERROR: '/.yt-dlp-wasm/cookies.txt' does not look like a Netscape format cookies file");
   assert.equal(explain(error, { usingDemoProxy: true }).title, 'That is not a cookies.txt file');
+});
+
+test('a Google sorry redirect is identified as an upstream YouTube challenge', () => {
+  const result = explain(new Error('CORS proxy error 409: YouTube has challenged this proxy connection'), { usingDemoProxy: false });
+  assert.equal(result.title, 'YouTube blocked the proxy connection');
+  assert.match(result.detail, /google.com/);
 });
